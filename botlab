@@ -1,0 +1,28 @@
+import asyncio
+import logging
+from aiogram import Dispatcher
+from loader import loop
+from throttling import ThrottlingMiddleware
+from aiogram.fsm.storage.redis import RedisStorage
+
+import Start
+import ucommand
+from config import bot
+
+# Запуск процесса поллинга новых апдейтов
+async def main():
+    # Включаем логирование, чтобы не пропустить важные сообщения
+    logging.basicConfig(level=logging.INFO)
+    # Объект бота
+    # Диспетчер
+    dp = Dispatcher()
+
+    dp.include_router(Start.router)
+    dp.include_router(ucommand.router)
+    # storage = RedisStorage.from_url('redis://localhost:6379')
+    # dp.message.middleware.register(ThrottlingMiddleware(storage=storage))
+    # dp.include_router(wherethebus.router)!!!!
+    await dp.start_polling(bot)
+
+
+loop.run_until_complete(main())
