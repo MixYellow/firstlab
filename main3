@@ -1,0 +1,62 @@
+import re
+import requests
+import unittest
+
+
+def is_valid_snils(snils: str) -> bool:
+    pattern = r"\d{3}-\d{3}-\d{3} \d{2}"
+    return re.match(pattern, snils) is not None
+
+
+url = "https://www.bolshoyvopros.ru/questions/2185932-skolko-cifr-v-snils-fizicheskogo-lica.html"
+r = requests.get(url)
+pattern = r"\d{3}-\d{3}-\d{3} \d{2}"
+
+
+def check_snils(snils):
+    if is_valid_snils(snils):
+        print(f"{snils} - Корректен")
+    else:
+        print(f"{snils} - Некорректен")
+
+
+def check_web(web):
+    snilses = re.findall(pattern, r.text)
+    if len(snilses) != 0:
+        print("На сайте найдены снилсы:")
+        for snils in snilses:
+            print(f"{snils}")
+    else:
+        print("На этом сайте снилсы не найдены")
+
+
+class Testsnilsvalid(unittest.TestCase):
+    def test_valid_snils(self):
+        self.assertTrue(is_valid_snils("123-123-123 00"))
+        self.assertTrue(is_valid_snils("123-345-678 12"))
+        self.assertTrue(is_valid_snils("346-345-543 65"))
+        self.assertTrue(is_valid_snils("453-163-623 39"))
+        self.assertTrue(is_valid_snils("643-738-981 87"))
+        self.assertTrue(is_valid_snils("621-873-832 98"))
+        self.assertTrue(is_valid_snils("873-873-432 94"))
+        self.assertTrue(is_valid_snils("783-003-234 23"))
+
+    def test_invalid_snils(self):
+        self.assertFalse(is_valid_snils("342342423 00"))
+        self.assertFalse(is_valid_snils("343 434 433 00"))
+        self.assertFalse(is_valid_snils("123-123 432 00"))
+        self.assertFalse(is_valid_snils("123-123-123-00"))
+        self.assertFalse(is_valid_snils("765_123_123 00"))
+        self.assertFalse(is_valid_snils("123--123-123 00"))
+        self.assertFalse(is_valid_snils("123_123-123 00"))
+        self.assertFalse(is_valid_snils("674_369^234 00"))
+        self.assertFalse(is_valid_snils("hvjhdshfjdsvf"))
+        self.assertFalse(is_valid_snils("abc-def-jgh nt"))
+
+
+user_snils = input()
+check_snils(user_snils)
+
+check_web(url)
+
+unittest.main()
