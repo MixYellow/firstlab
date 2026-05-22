@@ -29,3 +29,34 @@
        (map process-element)
        (filter some?)
        (into [])))
+
+(def sample-data
+  ["  123  "
+   " -5   "
+   "  45.6 "
+   "  abc  "
+   "   0   "
+   "   789 "
+   "   "
+   " 12.34 "])
+
+(println "Result:")
+(println (pipeline sample-data))
+
+(defn read-lines-until-empty []
+  (println "Enter lines (press Enter on empty line to finish):")
+  (loop [lines []]
+    (let [line (read-line)]
+      (if (or (nil? line) (empty? line))
+        lines
+        (recur (conj lines line))))))
+
+(defn -main []
+  (println "=== Data Processing Pipeline ===")
+  (let [user-input (read-lines-until-empty)]
+    (println "\nYou entered:")
+    (println user-input)
+    (println "\nPipeline result:")
+    (println (pipeline user-input))))
+
+(-main)
