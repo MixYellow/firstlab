@@ -13,3 +13,19 @@
       (Long/parseLong s))
     (catch NumberFormatException _
       nil)))
+
+;; валидация 
+(defn positive? [x]
+  (and (number? x) (> x 0)))
+
+(defn process-element [s]
+  (some-> s
+          clean-str
+          str->number
+          (#(when (positive? %) %))))
+
+(defn pipeline [raw-strings]
+  (->> raw-strings
+       (map process-element)
+       (filter some?)
+       (into [])))
