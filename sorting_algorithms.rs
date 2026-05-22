@@ -87,3 +87,54 @@ fn print_array(arr: &[i32]) {
 }
 
 
+fn main() {
+    println!("=== Сортировка массива ===");
+
+    // Ввод массива
+    println!("Введите целые числа через пробел (например: 5 2 8 1 9):");
+    let input = read_line();
+    let mut numbers = parse_numbers(&input);
+    if numbers.is_empty() {
+        println!("Не введено ни одного числа.");
+        return;
+    }
+
+    println!("Исходный массив:");
+    print_array(&numbers);
+
+    // Выбор алгоритма
+    println!("\nВыберите алгоритм сортировки:");
+    println!("1. Пузырьковая сортировка (Bubble Sort)");
+    println!("2. Сортировка вставками (Insertion Sort)");
+    println!("3. Быстрая сортировка (Quick Sort)");
+    print!("Ваш выбор (1-3): ");
+    io::stdout().flush().unwrap();
+
+    let choice = read_line();
+
+    // Копия массива для каждого алгоритма, чтобы не перемешивать (можно и по месту)
+    let mut sorted = numbers.clone();
+
+    match choice.as_str() {
+        "1" => {
+            bubble_sort(&mut sorted);
+            println!("\nРезультат (пузырьковая сортировка):");
+        }
+        "2" => {
+            insertion_sort(&mut sorted);
+            println!("\nРезультат (сортировка вставками):");
+        }
+        "3" => {
+            quick_sort_wrapper(&mut sorted);
+            println!("\nРезультат (быстрая сортировка):");
+        }
+        _ => {
+            println!("Неверный выбор. Завершение.");
+            return;
+        }
+    }
+    print_array(&sorted);
+}
+
+
+
