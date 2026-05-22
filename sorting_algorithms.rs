@@ -60,4 +60,30 @@ fn quick_sort_wrapper(arr: &mut Vec<i32>) {
     }
 }
 
+// Читает строку из stdin
+fn read_line() -> String {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Ошибка чтения строки");
+    input.trim().to_string()
+}
+
+// Парсит числа из строки, разделённые пробелами
+fn parse_numbers(input: &str) -> Vec<i32> {
+    input
+        .split_whitespace()
+        .filter_map(|s| s.parse::<i32>().ok())
+        .collect()
+}
+
+// Выводит массив в одну строку
+fn print_array(arr: &[i32]) {
+    for (i, num) in arr.iter().enumerate() {
+        if i > 0 {
+            print!(" ");
+        }
+        print!("{}", num);
+    }
+    println!();
+}
+
 
